@@ -1,0 +1,40 @@
+{
+  "title": "Equilibristas de Golang - Bloque 3 (Prototipo): Anatomía Visual del Aprendizaje",
+  "scenes": [
+    {
+      "id": "b3_01_intro",
+      "speaker": "jose",
+      "layout": "intro",
+      "avatar_mode": "full",
+      "title": "Bloque 3: Anatomía Visual del Aprendizaje en Go",
+      "text": "Hola equilibristas de Golang. En los bloques anteriores multiplicamos matrices a mano y bajamos al metal con Intel oneAPI y Level Zero. Hoy damos el salto clave: cómo aprende de verdad una red neuronal en Go puro, viendo las matemáticas con Gonum Plot y resolviendo dudas en directo con Jarvis."
+    },
+    {
+      "id": "b3_02_train",
+      "speaker": "jose",
+      "layout": "code",
+      "avatar_mode": "still",
+      "visual": "tarjetas/tarjeta_b3_01_train_xor.png",
+      "title": "07-train: Backpropagation con Gonum",
+      "text": "Aquí tenemos el corazón del ejemplo cero siete train. En cada época hacemos el forward pass multiplicando entradas por pesos y aplicando la sigmoide. Después calculamos el error frente al objetivo, propagamos la culpa hacia atrás con su derivada, y tras diez mil épocas nuestra red en Go resuelve la puerta XOR casi al cien por cien."
+    },
+    {
+      "id": "b3_03_jarvis_q",
+      "speaker": "jarvis",
+      "layout": "jarvis",
+      "visual": "tarjetas/tarjeta_b3_04_jarvis_qa.png",
+      "title": "Dudas y Preguntas con Jarvis",
+      "text": "Jose, tengo dos dudas clave sobre esta gráfica. Primera: si la sigmoide funciona tan bien aquí, ¿por qué ha caído en desuso en redes profundas frente a ReLU? Y segunda: ¿cómo explicarías a un programador de Go qué hace exactamente el sesgo sin usar fórmulas?"
+    },
+    {
+      "id": "b3_04_bias_ans",
+      "speaker": "jose",
+      "layout": "graph",
+      "avatar_mode": "still",
+      "visual": "tarjetas/tarjeta_b3_03_bias_temp.png",
+      "title": "Vanishing Gradient y El Poder del Sesgo",
+      "text": "Muy buena pregunta, Jarvis. En los extremos de la sigmoide la curva se aplana, la derivada tiende a cero y el gradiente desaparece al cruzar muchas capas. Y sobre el sesgo, míralo en esta gráfica de temperaturas por hora del día: el peso inclina la rampa, mientras que el sesgo desplaza el umbral a izquierda o derecha para distinguir las doce del mediodía de las seis de la tarde."
+    }
+  ]
+}
+

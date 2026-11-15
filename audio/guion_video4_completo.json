@@ -1,0 +1,75 @@
+{
+  "title": "Equilibristas de Golang - Bloque 4: La Vida en Tiempo Real y el Tejido Neuronal",
+  "scenes": [
+    {
+      "id": "b4_01_intro",
+      "speaker": "jose",
+      "layout": "intro",
+      "avatar_mode": "full",
+      "title": "Bloque 4: La Vida en Tiempo Real y el Tejido Neuronal",
+      "text": "Hola, equilibristas de Golang. Bienvenidos al cuarto episodio de nuestra serie de redes neuronales y aprendizaje profundo en Go. En la sesión anterior desgranamos las matemáticas fundamentales: resolvimos la compuerta XOR con Gonum, vimos cómo el error se propaga hacia atrás con backpropagation y analizamos el papel del peso y del sesgo. Pero las tablas de números y las gráficas estáticas solo cuentan la mitad de la historia. Hoy damos un salto colosal: vamos a transformar esa matemática abstracta en simulaciones visuales interactivas a sesenta fotogramas por segundo programadas en Go puro con Ebiten. Veremos cómo los pesos cambian dinámicamente en nuestro optimizador interactivo de XOR, nos sumergiremos en la hipótesis del Manifold deformando el espacio cósmico con Deep Space Stretching, inspeccionaremos tensores en vivo en nuestra pizarra matemática y multiplexaremos cinco motores de inferencia en paralelo, desde AVX y GPU Level Zero hasta WebAssembly en el navegador. Jarvis nos acompañará para debatir sobre la viabilidad de Go en producción frente a Python. Ajustad vuestras pantallas, porque hoy las neuronas cobran vida a sesenta hercios."
+    },
+    {
+      "id": "b4_02_ebiten_xor",
+      "speaker": "jose",
+      "layout": "code",
+      "avatar_mode": "still",
+      "visual": "tarjetas/tarjeta_b4_01_ebiten_xor.png",
+      "title": "10-neuron-js-golang: Tú eres el Optimizador a 60 FPS",
+      "text": "Comenzamos con nuestro ejemplo diez neuron js golang. El objetivo de este proyecto era convertir las fórmulas matemáticas en intuición táctil. En lugar de ejecutar diez mil épocas en un bucle ciego de consola, construimos un simulador visual con Ebiten donde cada elemento de la red tiene un significado visual inmediato. La opacidad de cada nodo refleja fielmente su nivel de activación sigmoidal. Las conexiones sinápticas se dibujan en tiempo real: de color verde para pesos excitatorios positivos y de color rojo para pesos inhibitorios negativos, mientras que el grosor de la línea representa la magnitud absoluta del peso. Con las flechas del teclado podemos entrenar o desentrenar la red manualmente a sesenta fotogramas por segundo, ajustando la tasa de aprendizaje en vivo. Ver cómo los pesos oscilan, cambian de polaridad y convergen hasta iluminar la neurona de salida únicamente cuando las entradas son disjuntas convierte el aprendizaje del descenso por gradiente en algo totalmente tangible."
+    },
+    {
+      "id": "b4_03_manifold_theory",
+      "speaker": "jose",
+      "layout": "code",
+      "avatar_mode": "still",
+      "visual": "tarjetas/tarjeta_b4_02_manifold_space.png",
+      "title": "11-juego-final: Deep Space Stretching y la Hipótesis del Manifold",
+      "text": "Entramos ahora en el plato fuerte: once juego final, Deep Space Stretching. Este simulador traduce las magistrales clases de Deep Learning de Yann LeCun y Alfredo Canziani en la Universidad de Nueva York a un entorno interactivo en Go. En el corazón de esta simulación se encuentra la célebre Hipótesis del Manifold. En problemas reales de clasificación, los datos de alta dimensión no están dispersos al azar, sino que residen sobre una variedad o manifold de menor dimensión plegada en el espacio. Imaginad una hoja de papel arrugada con estrellas rojas y azules entrelazadas en espiral. Ningún corte plano recto puede separarlas. Pero si una red neuronal de capas ocultas agarra esa hoja, la estira y la desdobla capa tras capa, la variedad se aplana y las estrellas se vuelven linealmente separables. En nuestro simulador, la cuadrícula azul representa este tejido cósmico. Al pulsar la tecla T para entrenar y la tecla S para simular, observamos cómo las capas ocultas deforman y estiran el espacio hasta desenredar las espirales."
+    },
+    {
+      "id": "b4_04_pizarra_calculo",
+      "speaker": "jose",
+      "layout": "code",
+      "avatar_mode": "still",
+      "visual": "tarjetas/tarjeta_b4_02_manifold_space.png",
+      "title": "La Pizarra de Cálculo: Inspección Tensorial en Vivo",
+      "text": "Para evitar que la red fuera una caja negra impenetrable, diseñamos junto al simulador la Pizarra de Cálculo en el archivo pizarra punto go. Al mover el ratón sobre cualquier nodo o capa en el panel derecho de la arquitectura, el simulador entra en modo auditoría e ilumina en tiempo real el flujo tensorial completo. La pizarra muestra la suma ponderada entrante, el desplazamiento del sesgo, el valor de activación resultante y las derivadas parciales que fluyen hacia atrás en ese instante. Podemos pulsar la tecla Enter para pausar el motor y avanzar paso a paso, examinando cómo la multiplicación matricial rota y escala los vectores espaciales de cada estrella. Es la herramienta definitiva para depurar una red neuronal: no mediante logs estáticos de texto, sino observando la geometría viva de las matrices en cada fotograma."
+    },
+    {
+      "id": "b4_05_engines_wasm",
+      "speaker": "jose",
+      "layout": "code",
+      "avatar_mode": "still",
+      "visual": "tarjetas/tarjeta_b4_03_engines_matrix.png",
+      "title": "Multiplexación de Motores: De CPU y GPU a WebAssembly",
+      "text": "Un aspecto arquitectónico clave del paquete nn es su sistema de motores desacoplados. Mediante una interfaz unificada en Go, el simulador puede alternar el backend de inferencia en caliente simplemente pulsando la tecla X. Tenemos cinco motores listos: standard, con bucles secuenciales en Go puro; parallel, que aprovecha las goroutines de Go para trocear capas entre los núcleos de la CPU; avx, con ensamblador vectorial x86 utilizando registros YMM de doscientos cincuenta y seis bits; y level zero, que despacha el cálculo matricial a la GPU Intel Arc con oneAPI. Y lo más potente de todo: gracias al compilador cruzado nativo de Go, compilar con GOOS igual a js y GOARCH igual a wasm genera un archivo binario de WebAssembly que corre idéntico dentro de cualquier navegador. A través de js bridge punto go, la web interactúa con el runtime de Go a sesenta fotogramas por segundo sin requerir un solo servidor externo."
+    },
+    {
+      "id": "b4_06_jarvis_qa",
+      "speaker": "jarvis",
+      "layout": "jarvis",
+      "avatar_mode": "crop512",
+      "visual": "tarjetas/tarjeta_b4_04_jarvis_qa.png",
+      "title": "Dudas Clave con Jarvis: Go en Producción y WebAssembly",
+      "text": "Saludos, Jose. La capacidad de simulación visual que habéis logrado en Go es impresionante. Sin embargo, como copiloto inteligente debo plantearte dos cuestiones cruciales que cualquier ingeniero de software se estará haciendo en este momento. La primera: en un mundo dominado casi en su totalidad por Python, PyTorch y CUDA para tareas de inteligencia artificial, ¿es Go realmente una opción viable y competitiva para entornos de producción, o se queda solo en un ejercicio docente fascinante? ¿Dónde aporta Go un valor tangible? Y la segunda: desde el punto de vista de la divulgación técnica y la accesibilidad, ¿qué ventajas reales aporta compilar este simulador completo a WebAssembly frente a distribuir un binario tradicional de escritorio?"
+    },
+    {
+      "id": "b4_07_jarvis_ans",
+      "speaker": "jose",
+      "layout": "code",
+      "avatar_mode": "still",
+      "visual": "tarjetas/tarjeta_b4_04_jarvis_qa.png",
+      "title": "Respuestas Técnicas: El Poder de Go en Inferencia y Serving",
+      "text": "Excelentes preguntas, Jarvis. Empecemos por la viabilidad de Go en producción. Go no pretende competir con PyTorch en la fase de entrenamiento de modelos masivos de frontera con billones de parámetros. Pero donde Go es absolutamente imbatible es en la fase de inferencia y despliegue, lo que llamamos Model Serving. Desplegar Python en producción implica lidiar con contenedores Docker gigantescos de quince gigabytes, entornos Conda frágiles, bindings de CUDA inestables y el bloqueo del intérprete por el GIL. En cambio, con Go compilas un binario estático de apenas veinte megabytes sin dependencias externas. Las goroutines nativas permiten atender decenas de miles de peticiones de inferencia simultáneas con latencias de microsegundos y un consumo mínimo de memoria RAM. Y respecto a WebAssembly, su valor reside en la democratización del aprendizaje: para que un desarrollador entienda la hipótesis del manifold, no queremos obligarle a instalar toolchains complejos ni entornos virtuales; le envías un enlace web y el navegador ejecuta bytecode nativo de Go a sesenta fotogramas por segundo con gráficos fluidos y cero fricción."
+    },
+    {
+      "id": "b4_08_outro",
+      "speaker": "jose",
+      "layout": "intro",
+      "avatar_mode": "full",
+      "title": "Cierre del Bloque 4 y Rumbo al Silicio Libre RISC-V",
+      "text": "Con esto cerramos este Bloque cuatro. Hemos visto cómo nuestras redes neuronales en Go han pasado de cálculos matriciales en consola a mundos interactivos a sesenta fotogramas por segundo con Ebiten, desentrañando la hipótesis del manifold y multiplexando motores desde la GPU hasta WebAssembly. Pero aún nos queda una última frontera por conquistar. En nuestro próximo episodio, el Bloque cinco extra, abandonaremos el PC y llevaremos estas mismas redes neuronales al silicio libre. Compilaremos ensamblador vectorial nativo RVV uno punto cero para ejecutar inferencia en la placa Kendryte K230 de arquitectura RISC-V. Tenéis todo el código disponible en nuestro repositorio sandbox de Equilibristas de Golang y las explicaciones completas en el blog. Suscribíos al canal, dejad vuestras dudas en los comentarios y nos vemos en el siguiente equilibrio."
+    }
+  ]
+}

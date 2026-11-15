@@ -1,0 +1,83 @@
+{
+  "title": "Equilibristas de Golang - Bloque 3: Anatomía Visual del Aprendizaje en Go",
+  "scenes": [
+    {
+      "id": "b3_01_intro",
+      "speaker": "jose",
+      "layout": "intro",
+      "avatar_mode": "full",
+      "title": "Bloque 3: Anatomía Visual del Aprendizaje en Go",
+      "text": "Hola, equilibristas de Golang. Bienvenidos de nuevo a nuestra serie sobre redes neuronales y aprendizaje profundo en Go. En las dos primeras sesiones exploramos cómo multiplicar matrices con Gonum y cómo acelerar operaciones en paralelo aprovechando la GPU Intel Arc con Level Zero y oneAPI. Pero hoy damos el paso más emocionante de todo este viaje: vamos a programar desde cero una red neuronal viva, capaz de aprender por sí misma a resolver el problema del XOR. Veremos cómo se propaga la información hacia adelante, cómo se calcula la pérdida, cómo funciona la retropropagación o backpropagation paso a paso en Go puro, y desglosaremos con gráficas 2D de Gonum Plot qué hacen exactamente los pesos y el sesgo. Además, contaremos con Jarvis, nuestro copiloto inteligente, para profundizar en las dudas más críticas sobre gradientes desvanecidos y optimización. Preparaos vuestro terminal porque hoy la matemática cobra vida."
+    },
+    {
+      "id": "b3_02_xor_problem",
+      "speaker": "jose",
+      "layout": "code",
+      "avatar_mode": "still",
+      "visual": "tarjetas/tarjeta_b3_01_train_xor.png",
+      "title": "El Problema del XOR y la Separabilidad Lineal",
+      "text": "Para entender por qué necesitamos redes multicapa, debemos remontarnos a 1969, cuando Minsky y Papert demostraron las limitaciones del perceptrón simple. Puertas lógicas como AND u OR son linealmente separables: basta trazar una línea recta en un plano bidimensional para separar los ceros de los unos. Sin embargo, en la puerta XOR esto es geométricamente imposible. Si las entradas son cero cero o uno uno, la salida debe ser cero; pero si son cero uno o uno cero, la salida debe ser uno. Los ceros y los unos están en esquinas opuestas de un cuadrado. Una sola neurona jamás podrá trazar una recta que los divida. Para resolver este desafío necesitamos introducir una dimensión oculta: una capa intermedia que deforme el espacio de entrada, proyectándolo de tal manera que en la capa final sí se vuelva linealmente separable. Y eso es exactamente lo que hace nuestro paquete cero siete train en Go."
+    },
+    {
+      "id": "b3_03_forward_pass",
+      "speaker": "jose",
+      "layout": "code",
+      "avatar_mode": "still",
+      "visual": "tarjetas/tarjeta_b3_01_train_xor.png",
+      "title": "07-train: Arquitectura y Forward Pass en Go",
+      "text": "Echemos un vistazo al código de cero siete train. En la función main definimos primero nuestra matriz de entradas con cuatro filas y dos columnas mediante mat punto NewDense, conteniendo todas las combinaciones posibles de dos bits. La matriz objetivo, o targets, guarda las cuatro salidas deseadas. A continuación instanciamos dos matrices de pesos: wHidden, de dos por dos, que conecta las dos entradas con dos neuronas ocultas, y wOutput, de dos por una, que conecta la capa oculta con la neurona de salida. Inicializamos todos los pesos con valores aleatorios entre cero y uno. Durante el forward pass, que ocurre dentro del bucle de entrenamiento, multiplicamos la matriz de entradas por los pesos ocultos con hiddenLayerInput punto Mul. Acto seguido aplicamos la función sigmoide elemento a elemento para obtener hiddenLayerOutput. Repetimos el proceso multiplicando esa salida oculta por los pesos finales wOutput y aplicando de nuevo la sigmoide. El resultado final es la predicción actual de la red, que al principio del entrenamiento no es más que ruido aleatorio."
+    },
+    {
+      "id": "b3_04_backpropagation",
+      "speaker": "jose",
+      "layout": "code",
+      "avatar_mode": "still",
+      "visual": "tarjetas/tarjeta_b3_01_train_xor.png",
+      "title": "Backpropagation: El Gradiente del Error en Go",
+      "text": "Una vez obtenida la predicción, comienza la verdadera magia: la retropropagación o backpropagation. En primer lugar calculamos el error de salida restando las predicciones a los objetivos reales con outputError punto Sub. Para saber en qué dirección y con qué intensidad debemos ajustar los pesos, necesitamos la derivada de la función sigmoide, que tiene la maravillosa propiedad de calcularse como s multiplicado por uno menos s. Multiplicamos elemento a elemento el error por esta derivada para obtener el gradiente de salida, dOutput. Luego propagamos esa culpa hacia atrás: multiplicamos dOutput por la transpuesta de los pesos de salida para averiguar cuánto se equivocó cada neurona oculta. Con los gradientes calculados en ambas capas, actualizamos las matrices de pesos sumando el producto de las entradas por los gradientes escalados por nuestra tasa de aprendizaje, fijada en cero coma cinco. Si ejecutáis este programa con go run, veréis cómo en la época cero el error acumulado es enorme, pero tras diez mil épocas el error se reduce a cero coma cero cero dos, prediciendo con asombrosa precisión cero, uno, uno y cero."
+    },
+    {
+      "id": "b3_05_sigmoid_curve",
+      "speaker": "jose",
+      "layout": "graph",
+      "avatar_mode": "still",
+      "visual": "tarjetas/tarjeta_b3_02_sigmoid_plot.png",
+      "title": "08 y 09: Anatomía Visual de la Sigmoide",
+      "text": "Ahora que hemos visto el bucle completo, profundicemos en la función matemática que hace todo esto posible: la sigmoide logística, definida como uno dividido entre uno más e elevado a menos x. En el ejemplo cero nueve sigmoid graph utilizamos la biblioteca Gonum Plot para dibujar esta función en un rango de menos diez a más diez. Observad la curva en pantalla: es suave, continua y completamente diferenciable en todo su dominio. Lo fascinante de la sigmoide es que actúa como un compresor no lineal: cualquier número real desde menos infinito hasta más infinito queda perfectamente acotado entre cero y uno. Esto es ideal para problemas de clasificación binaria, donde interpretamos la salida como la probabilidad de que pertenezca a una clase determinada. Además, sin esta no linealidad, una red neuronal de mil capas colapsaría matemáticamente en una simple transformación lineal idéntica a una sola capa. La sigmoide es la encargada de introducir la curvatura en el espacio de decisión."
+    },
+    {
+      "id": "b3_06_neuron_bias_temp",
+      "speaker": "jose",
+      "layout": "graph",
+      "avatar_mode": "still",
+      "visual": "tarjetas/tarjeta_b3_03_bias_temp.png",
+      "title": "10-neuron: Peso vs Sesgo y Predicción Temporal",
+      "text": "Pasemos ahora a los ejemplos diez neuron y diez neuron temperatura para desvelar los dos roles fundamentales de una neurona: el peso y el sesgo o bias. La fórmula de activación es el producto escalar de las entradas por los pesos más el sesgo. ¿Qué hace cada uno? En la gráfica comparativa podemos comprobarlo con claridad: el peso controla la inclinación o pendiente de la curva en ese punto, determinando la agresividad con la que la neurona responde ante pequeñas variaciones. Por el contrario, el sesgo desplaza horizontalmente toda la curva hacia la izquierda o hacia la derecha. Imaginad nuestro modelo de predicción de temperatura a lo largo de las veinticuatro horas del día. Si no tuviéramos sesgo, la neurona siempre cruzaría el umbral de activación de cero coma cinco exactamente cuando la entrada vale cero, es decir, a medianoche. Gracias a un sesgo adecuado, podemos desplazar ese punto crítico hacia las doce del mediodía o las seis de la tarde, cuando el calor del sol realmente se concentra. El sesgo es el parámetro que permite a la neurona decidir cuándo debe activarse independientemente del origen de coordenadas."
+    },
+    {
+      "id": "b3_07_jarvis_qa_questions",
+      "speaker": "jarvis",
+      "layout": "jarvis",
+      "visual": "tarjetas/tarjeta_b3_04_jarvis_qa.png",
+      "title": "Dudas Clave con Jarvis: Gradientes y Sesgo",
+      "text": "Saludos, Jose. Analizando la estructura matemática de estos ejemplos, me surgen dos preguntas técnicas fundamentales que cualquier desarrollador de Go se hará al construir sistemas más complejos. La primera: si la función sigmoide resulta tan limpia y elegante para mapear probabilidades entre cero y uno, ¿por qué en las arquitecturas modernas de deep learning, como los Transformers o redes convolucionales profundas, ha sido sustituida por ReLU o GELU? ¿Qué peligro oculta en redes de muchas capas? Y la segunda: para un programador que viene de escribir APIs en Go y no está familiarizado con el álgebra matricial, ¿cómo le explicarías de forma intuitiva qué es el sesgo y por qué una red sin sesgo está prácticamente ciega?"
+    },
+    {
+      "id": "b3_08_jarvis_qa_answers",
+      "speaker": "jose",
+      "layout": "graph",
+      "avatar_mode": "still",
+      "visual": "tarjetas/tarjeta_b3_04_jarvis_qa.png",
+      "title": "Respuestas Técnicas: Vanishing Gradient y Analogía del Termostato",
+      "text": "Excelentes preguntas, Jarvis. La primera nos lleva al célebre problema del desvanecimiento del gradiente o vanishing gradient. Si observáis los extremos de la curva sigmoide, cuando la entrada es menor que menos cuatro o mayor que más cuatro, la curva se vuelve prácticamente horizontal. En esas regiones de saturación, la pendiente o derivada es casi cero, con un valor máximo de solo cero veinticinco en el origen. Cuando entrenamos una red profunda con la regla de la cadena, multiplicamos las derivadas de cada capa hacia atrás. Si multiplicas diez números menores que cero veinticinco entre sí, el gradiente resultante es minúsculo, del orden de diez a la menos seis. Las primeras capas de la red dejan de recibir señal de error y dejan de aprender. Por eso hoy usamos activaciones como ReLU, cuya derivada para valores positivos es siempre uno constante. Y respecto a tu segunda pregunta sobre el sesgo: pensad en el sesgo como en el termostato de una caldera o el control de volumen de unos altavoces. Los pesos determinan cuánto sube la temperatura por cada grado que marque el termómetro exterior. Pero el sesgo define la temperatura de consigna a partir de la cual la caldera decide encenderse. Sin sesgo, una red neuronal estaría forzada a que cuando todas las entradas sean cero, la salida esté bloqueada en el origen, incapacitada para clasificar cualquier patrón que no pase exactamente por el centro."
+    },
+    {
+      "id": "b3_09_outro",
+      "speaker": "jose",
+      "layout": "intro",
+      "avatar_mode": "full",
+      "title": "Cierre del Bloque 3 y Salto al Bloque 4",
+      "text": "Con esto cerramos este Bloque tres de nuestra serie. Hemos visto cómo una modesta red neuronal en Go, implementada en apenas cien líneas con Gonum, es capaz de domar la no linealidad del XOR mediante el forward pass y la retropropagación de Barrett. También hemos desmitificado la función sigmoide, el peso y el sesgo. En el próximo episodio daremos un salto mayúsculo: abandonaremos las gráficas estáticas en PNG y nos sumergiremos en simulaciones interactivas en tiempo real a sesenta fotogramas por segundo con Ebiten y WebAssembly. Veremos la hipótesis del manifold, observando cómo una red dobla y estira el espacio visual para desentrañar espirales complejas, y cómo multiplexar motores desde CPU hasta WebAssembly. Tenéis todo el código disponible en nuestro repositorio sandbox de Equilibristas de Golang y las explicaciones completas en el blog. Suscribíos al canal, dejad vuestras dudas en los comentarios y nos vemos en el siguiente equilibrio."
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "title": "Equilibristas de Golang - Bloque 4: La Vida en Tiempo Real y el Tejido Neuronal",
+  "total_duration_sec": 459.513,
+  "scenes": [
+    {
+      "id": "b4_01_intro",
+      "speaker": "jose",
+      "layout": "intro",
+      "title": "Bloque 4: La Vida en Tiempo Real y el Tejido Neuronal",
+      "visual": "",
+      "avatar_mode": "full",
+      "audio": "audio/b4_01_intro.wav",
+      "duration_sec": 68.929,
+      "start_sec": 0.0,
+      "end_sec": 68.929
+    },
+    {
+      "id": "b4_02_ebiten_xor",
+      "speaker": "jose",
+      "layout": "code",
+      "title": "10-neuron-js-golang: Tú eres el Optimizador a 60 FPS",
+      "visual": "tarjetas/tarjeta_b4_01_ebiten_xor.png",
+      "avatar_mode": "still",
+      "audio": "audio/b4_02_ebiten_xor.wav",
+      "duration_sec": 60.728,
+      "start_sec": 68.929,
+      "end_sec": 129.656
+    },
+    {
+      "id": "b4_03_manifold_theory",
+      "speaker": "jose",
+      "layout": "code",
+      "title": "11-juego-final: Deep Space Stretching y la Hipótesis del Manifold",
+      "visual": "tarjetas/tarjeta_b4_02_manifold_space.png",
+      "avatar_mode": "still",
+      "audio": "audio/b4_03_manifold_theory.wav",
+      "duration_sec": 61.139,
+      "start_sec": 129.656,
+      "end_sec": 190.795
+    },
+    {
+      "id": "b4_04_pizarra_calculo",
+      "speaker": "jose",
+      "layout": "code",
+      "title": "La Pizarra de Cálculo: Inspección Tensorial en Vivo",
+      "visual": "tarjetas/tarjeta_b4_02_manifold_space.png",
+      "avatar_mode": "still",
+      "audio": "audio/b4_04_pizarra_calculo.wav",
+      "duration_sec": 48.844,
+      "start_sec": 190.795,
+      "end_sec": 239.639
+    },
+    {
+      "id": "b4_05_engines_wasm",
+      "speaker": "jose",
+      "layout": "code",
+      "title": "Multiplexación de Motores: De CPU y GPU a WebAssembly",
+      "visual": "tarjetas/tarjeta_b4_03_engines_matrix.png",
+      "avatar_mode": "still",
+      "audio": "audio/b4_05_engines_wasm.wav",
+      "duration_sec": 57.229,
+      "start_sec": 239.639,
+      "end_sec": 296.868
+    },
+    {
+      "id": "b4_06_jarvis_qa",
+      "speaker": "jarvis",
+      "layout": "jarvis",
+      "title": "Dudas Clave con Jarvis: Go en Producción y WebAssembly",
+      "visual": "tarjetas/tarjeta_b4_04_jarvis_qa.png",
+      "avatar_mode": "crop512",
+      "audio": "audio/b4_06_jarvis_qa.wav",
+      "duration_sec": 43.674,
+      "start_sec": 296.868,
+      "end_sec": 340.542
+    },
+    {
+      "id": "b4_07_jarvis_ans",
+      "speaker": "jose",
+      "layout": "code",
+      "title": "Respuestas Técnicas: El Poder de Go en Inferencia y Serving",
+      "visual": "tarjetas/tarjeta_b4_04_jarvis_qa.png",
+      "avatar_mode": "still",
+      "audio": "audio/b4_07_jarvis_ans.wav",
+      "duration_sec": 66.83,
+      "start_sec": 340.542,
+      "end_sec": 407.372
+    },
+    {
+      "id": "b4_08_outro",
+      "speaker": "jose",
+      "layout": "intro",
+      "title": "Cierre del Bloque 4 y Rumbo al Silicio Libre RISC-V",
+      "visual": "",
+      "avatar_mode": "full",
+      "audio": "audio/b4_08_outro.wav",
+      "duration_sec": 52.141,
+      "start_sec": 407.372,
+      "end_sec": 459.513
+    }
+  ]
+}

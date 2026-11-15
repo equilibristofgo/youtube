@@ -1,0 +1,24 @@
+# Credenciales sensibles de Google / YouTube API (¡NUNCA subir a git!)
+client_secret*.json
+youtube.token*.json
+*.token.json
+
+# Renders y clips de vídeo pesados (se generan localmente)
+output/*.mp4
+output/*.mkv
+clips/*.mp4
+clips/*.mkv
+
+# Audios binarios sintetizados (los guiones JSON sí se suben)
+audio/*.wav
+audio/*.raw.wav
+
+# Cachés y temporales de Python y Blender
+__pycache__/
+*.py[cod]
+*.blend1
+.venv/
+.DS_Store
+*.swp
+*.bak
+
