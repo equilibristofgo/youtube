@@ -1,0 +1,75 @@
+{
+  "title": "Equilibristas de Golang - Bloque 5: Del Cloud al Silicio Libre: Go + ML sobre RISC-V y RVV 1.0",
+  "scenes": [
+    {
+      "id": "b5_01_intro",
+      "speaker": "jose",
+      "layout": "intro",
+      "avatar_mode": "full",
+      "title": "Bloque 5: Del Cloud al Silicio Libre: Go + ML en RISC-V",
+      "text": "Hola equilibristas de Golang. Bienvenidos a este episodio especial de cierre: el Bloque cinco. A lo largo de esta serie hemos recorrido un camino fascinante: arrancamos con las matemáticas puras de multiplicación matricial en Gonum, aceleramos nuestros tensores en la GPU Intel Arc con Level Zero, desgranamos la anatomía del aprendizaje con la compuerta XOR y backpropagation, y en el episodio anterior dimos vida a nuestras redes a sesenta fotogramas por segundo con Ebiten y WebAssembly. Pero en el mundo del aprendizaje profundo casi siempre asumimos una premisa tácita: que los modelos deben vivir en servidores pesados con procesadores x86, clústeres en la nube y tarjetas gráficas que devoran cientos de vatios de energía. Hoy vamos a romper ese paradigma. Vamos a descender hasta el silicio abierto y libre: la arquitectura RISC-V. En este episodio llevaremos nuestras neuronas en Go a una placa de desarrollo CanMV K doscientos treinta, impulsada por el procesador Kendryte K doscientos treinta. Veremos cómo compilar Go de forma estática y nativa para RISC-V sin sufrir con cadenas de compilación cruzada en C, cómo programar ensamblador vectorial puro utilizando la extensión oficial RVV uno punto cero, y por qué la filosofía de longitud de vector agnóstica de RISC-V supera el modelo SIMD tradicional de x86. Jarvis estará con nosotros para analizar el valor estratégico de Go en el Edge AI y el futuro de las arquitecturas abiertas. Preparad vuestros ensambladores, porque hoy Go toca el silicio libre."
+    },
+    {
+      "id": "b5_02_k230_hardware",
+      "speaker": "jose",
+      "layout": "code",
+      "avatar_mode": "still",
+      "visual": "tarjetas/tarjeta_b5_02_k230_soc.png",
+      "title": "Arquitectura Kendryte K230: Heterogeneidad y Edge AI",
+      "text": "Para entender por qué este hito es tan relevante, debemos mirar el corazón de la placa CanMV K doscientos treinta: el SoC Kendryte K doscientos treinta de Canaan. Este procesador implementa una arquitectura heterogénea de doble núcleo RISC-V de sesenta y cuatro bits basada en la microarquitectura T-Head C novecientos ocho de Alibaba. El núcleo cero es un procesador de bajo consumo que corre a ochocientos megahercios, ideal para arranques ultrarrápidos, gestión de sensores y sistemas operativos de tiempo real como RT-Thread. Pero el núcleo de cómputo principal, el núcleo uno, sube hasta uno punto seis gigahercios y ejecuta una distribución completa de Linux embebido. Lo verdaderamente revolucionario de este núcleo es que incorpora una unidad de procesamiento vectorial VPU que cumple con la especificación estándar RISC-V Vector Extension versión uno punto cero con un ancho de registro de ciento veintiocho bits. Esto sitúa a la K doscientos treinta en un punto óptimo para Edge AI: no es un microcontrolador minúsculo incapaz de ejecutar redes complejas, ni una placa de quince vatios que requiera disipadores masivos; es un procesador capaz de ejecutar Linux, con conectividad de red, consumo de apenas uno o dos vatios y aceleración vectorial nativa sobre silicio abierto."
+    },
+    {
+      "id": "b5_03_cross_compile",
+      "speaker": "jose",
+      "layout": "code",
+      "avatar_mode": "still",
+      "visual": "tarjetas/tarjeta_b5_01_riscv_rvv.png",
+      "title": "Cross-Compiling en Go: Cero Fricción para RISC-V",
+      "text": "Cualquiera que haya intentado compilar proyectos de C o C++ para arquitecturas embebidas conoce el calvario de la compilación cruzada: configurar cadenas de herramientas específicas, lidiar con versiones incompatibles de la biblioteca estándar de C, enlazar librerías dinámicas inexistentes en el sistema destino y pelear con scripts de CMake eternos. Aquí es donde Go demuestra su supremacía como lenguaje de sistemas moderno. La compilación cruzada en Go no es un parche ni un complemento externo; está integrada en las entrañas del propio compilador. Con una sola línea en nuestra terminal podemos generar un binario ejecutable completo: CGO ENABLED igual a cero, GOOS igual a linux, GOARCH igual a riscv sesenta y cuatro, y GORISCV64 igual a erre uve a veintidós u sesenta y cuatro. Al desactivar CGO, el compilador genera un binario estático en formato ELF sin ninguna dependencia de bibliotecas compartidas del sistema. La bandera GORISCV64 selecciona el perfil de aplicación moderno RVA veintidós, habilitando instrucciones comprimidas, operaciones atómicas y soporte completo de coma flotante. El resultado es un único archivo binario de apenas un megabyte y medio que podemos copiar directamente a la tarjeta microSD de la K doscientos treinta mediante SSH y ejecutar de inmediato sin instalar absolutamente nada en la placa."
+    },
+    {
+      "id": "b5_04_rvv_assembly",
+      "speaker": "jose",
+      "layout": "code",
+      "avatar_mode": "still",
+      "visual": "tarjetas/tarjeta_b5_01_riscv_rvv.png",
+      "title": "12-riscv-rvv: Ensamblador Vectorial RVV 1.0 en Go",
+      "text": "Pasemos ahora al código en nuestro ejemplo doce riscv rvv. En el archivo vector riscv sesenta y cuatro punto ese hemos implementado las operaciones neurónicas fundamentales directamente en ensamblador de Go bajo el dialecto Plan nueve. En Go uno punto veinticuatro las constantes de la extensión vectorial de RISC-V ya están definidas en el compilador interno, y mientras se estandariza el codificador mnemónico textual, emitimos los códigos de operación exactos de treinta y dos bits mediante directivas WORD, manteniendo los mnemónicos comentados para máxima legibilidad. Observemos la función VectorAddRVV: cargamos los punteros base de destino en A cero, origen en A uno y la longitud en A dos. La magia comienza con la instrucción VSETVLI. Esta instrucción configura el modo de operación vectorial solicitando procesar elementos float de treinta y dos bits. El procesador responde en el registro A tres indicando exactamente cuántos elementos puede computar en una sola pasada. A continuación, VLE treinta y dos punto V carga los trozos vectoriales en los registros V uno y V dos; VFADD punto VV realiza la suma en paralelo en hardware; y VSE treinta y dos punto V almacena el resultado directamente en memoria. En DotProductRVV aplicamos este mismo principio para calcular el producto escalar neurónico mediante la instrucción VFMACC punto VV, que ejecuta multiplicación y acumulación fusionada con precisión total, seguida de una reducción horizontal VFREDUSUM para retornar la suma en un único escalar."
+    },
+    {
+      "id": "b5_05_vla_philosophy",
+      "speaker": "jose",
+      "layout": "code",
+      "avatar_mode": "still",
+      "visual": "tarjetas/tarjeta_b5_03_vla_vs_avx.png",
+      "title": "Filosofía Vector Length Agnostic (VLA) vs x86 SIMD",
+      "text": "Aquí llegamos a la mayor genialidad arquitectónica de RISC-V frente a las extensiones SIMD tradicionales de x86 como AVX dos o AVX quinientos doce: la filosofía de Longitud de Vector Agnóstica o VLA. En la arquitectura x86, cada evolución histórica del vector ha impuesto un tamaño rígido e inmutable codificado a fuego en los registros. SSE trabaja a ciento veintiocho bits; AVX a doscientos cincuenta y seis; y AVX quinientos doce a quinientos doce bits. Esto obliga a los ingenieros de software a escribir código distinto para cada microarquitectura y a implementar tediosos bucles residuales escalares para procesar los elementos finales cuando el tamaño de un array no es múltiplo exacto de ocho o dieciséis. En cambio, en RVV uno punto cero, el código ensamblador que hemos escrito no asume ningún ancho de vector rígido. Es el procesador en tiempo de ejecución quien decide cuántos floats procesar a la vez. Si ejecutamos este mismo binario en nuestra placa K doscientos treinta con registros de ciento veintiocho bits, procesará cuatro floats por iteración. Si mañana llevamos este binario a un servidor RISC-V con registros de mil veinticuatro bits, procesará treinta y dos floats por iteración sin tocar ni una sola línea de código y sin recompilar. Y en la última iteración, la propia instrucción VSETVLI ajusta la máscara para procesar únicamente los elementos sobrantes sin desbordar la memoria ni necesitar bucles escalares extra."
+    },
+    {
+      "id": "b5_06_jarvis_qa",
+      "speaker": "jarvis",
+      "layout": "jarvis",
+      "avatar_mode": "crop512",
+      "visual": "tarjetas/tarjeta_b5_04_jarvis_qa.png",
+      "title": "Dudas Clave con Jarvis: Go en Edge AI y Silicio Libre",
+      "text": "Fascinante análisis, Jose. Lograr que una red neuronal ejecute instrucciones vectoriales nativas en silicio abierto mediante binarios estáticos de Go es un logro extraordinario. Sin embargo, para los ingenieros que trabajan habitualmente en sistemas embebidos e inteligencia artificial en el borde, me gustaría profundizar en dos cuestiones clave. En primer lugar: el desarrollo en placas embebidas de bajo coste ha estado históricamente polarizado entre C y C++ por motivos de latencia crítica, o MicroPython por facilidad de desarrollo. ¿Por qué elegiría un equipo de ingeniería Go para Edge AI en lugar de C++ o MicroPython? ¿No supone el recolector de basura de Go una penalización inasumible en dispositivos con recursos ajustados? Y en segundo lugar: en el episodio anterior vimos cómo nuestro simulador espacial desacoplaba cinco motores de inferencia. ¿Cómo se articula este desarrollo de RVV uno punto cero con la arquitectura global de nuestra serie? ¿Podríamos integrar esta capa vectorial como un motor de inferencia nativo dentro del ecosistema de Deep Space?"
+    },
+    {
+      "id": "b5_07_jarvis_ans",
+      "speaker": "jose",
+      "layout": "code",
+      "avatar_mode": "still",
+      "visual": "tarjetas/tarjeta_b5_04_jarvis_qa.png",
+      "title": "Respuestas Técnicas: El Punto Dulce de Go en Edge y Motores",
+      "text": "Brillantes reflexiones, Jarvis. Analicemos primero el dilema del lenguaje en Edge AI. MicroPython es excelente para encender un led o leer un sensor elemental, pero su rendimiento computacional para tensores es de dos órdenes de magnitud inferior y carece de concurrencia real multicore. En el otro extremo, C y C++ ofrecen máxima velocidad en bruto, pero conllevan el enorme coste de seguridad de memoria, fugas silenciosas, punteros colgantes y pesadillas al gestionar dependencias externas en cadenas de compilación cruzada. Go representa el punto dulce perfecto: nos ofrece un rendimiento cercano al metal, seguridad de tipos y memoria, y primitivas concurrentes nativas mediante goroutines y canales que son ideales para capturar flujos de cámaras y sensores mientras la red procesa inferencias. Y respecto al recolector de basura: en las versiones modernas de Go como la uno punto veinticuatro, las pausas del recolector están por debajo de los cien microsegundos. Además, en una arquitectura de inferencia bien diseñada, los tensores y buffers de activación se preasignan una sola vez durante el arranque, de modo que en el bucle crítico de cálculo el número de asignaciones dinámicas en el montón es exactamente cero, eliminando cualquier presión sobre el recolector de basura. Y respondiendo a tu segunda pregunta: en once juego final definimos la interfaz abstracta Engine. Si empaquetamos estas funciones vectoriales en un paquete nn barra riscv, la misma red neuronal que hoy deforma la variedad cósmica en Ebiten puede correr acelerada por hardware en la K doscientos treinta, demostrando la versatilidad de un diseño limpio en Go."
+    },
+    {
+      "id": "b5_08_outro",
+      "speaker": "jose",
+      "layout": "intro",
+      "avatar_mode": "full",
+      "title": "Cierre de Temporada: El Viaje de Equilibristas de Golang",
+      "text": "Y con esto llegamos al final de este viaje extraordinario a lo largo de cinco episodios en Equilibristas de Golang. Comenzamos este proyecto con una pregunta audaz: ¿es Go un lenguaje preparado para el aprendizaje profundo y la computación científica de alto rendimiento? A lo largo de esta temporada hemos demostrado con código real que la respuesta es un rotundo sí. Hemos entrenado redes desde cero resolviendo la compuerta XOR; hemos acelerado multiplicaciones matriciales en la GPU Intel Arc con Level Zero; hemos visualizado la geometría viva de los pesos, el sesgo y la hipótesis del manifold a sesenta fotogramas por segundo con Ebiten; hemos exportado simuladores completos a la web con WebAssembly; y hoy hemos coronado el viaje compilando ensamblador vectorial RVV uno punto cero para silicio abierto en RISC-V. Go no es solo un lenguaje para crear microservicios y APIs en el backend; es una herramienta de ingeniería de primer nivel para construir el futuro del software inteligente, seguro y eficiente. Todo el código fuente, los simuladores de Ebiten, los scripts de ensamblador y los artículos detallados están a vuestra disposición en el repositorio sandbox de GitHub y en el blog oficial. Muchas gracias por acompañarnos, gracias a Jarvis por sus lúcidas preguntas, y continuad siempre manteniendo el equilibrio en Go. Hasta la próxima."
+    }
+  ]
+}

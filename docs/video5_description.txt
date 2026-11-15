@@ -1,0 +1,26 @@
+¿Es posible programar redes neuronales directamente para procesadores RISC-V y exprimir su unidad vectorial RVV 1.0 utilizando el lenguaje Go y compilación nativa cruzada?
+
+En este quinto y último bloque de la serie "Equilibristas de Golang", damos el salto definitivo: del cloud y las GPUs privativas al silicio abierto. Conectamos con el SoC Canaan Kendryte K230 (Dual-Core 64-bit RISC-V T-Head C908) y desgranamos la arquitectura de inferencia con ensamblador vectorial puro.
+
+⏱️ TIMESTAMPS / CAPÍTULOS:
+00:00 - Introducción: La rebelión del silicio libre y el salto a RISC-V
+01:30 - Arquitectura Kendryte K230: Heterogeneidad, núcleos 1.6 GHz y Edge AI
+02:46 - Cross-Compiling sin dolor en Go: Compilando binarios de 1.4 MB para Linux RISC-V
+04:10 - 12-riscv-rvv: Ensamblador Vectorial RVV 1.0 (VSETVLI, VLE32.V, VFMACC.VV)
+05:43 - Filosofía Vector Length Agnostic (VLA) vs x86 SIMD tradicional (AVX)
+07:12 - Consultorio Técnico con Jarvis: ¿Go en Edge AI y Silicio Abierto?
+08:17 - Respuestas Técnicas: El punto dulce de Go frente a Python en Edge
+09:52 - Cierre de la serie: Del cálculo matricial a las puertas del silicio libre
+
+🌐 ARTÍCULO DEL BLOG Y COMUNIDAD:
+• Entrada completa en el Blog (Desglose técnico de la serie):
+  https://equilibristofgo.github.io/blog/posts/04-post/
+• ¿Quieres participar o apuntarte a la comunidad? Lee antes nuestras normas:
+  https://github.com/equilibristofgo/blog/blob/main/CODE_OF_CONDUCT.md
+• Manifiesto "¿De qué va esto?":
+  https://equilibristofgo.github.io/blog/posts/00-de-que-va-esto/
+• Repositorio con el código (módulo 12-riscv-rvv):
+  https://github.com/equilibristofgo/sandbox
+
+#riscv #golang #machinelearning #kendryte #k230 #rvv #deeplearning #china #siliciolibre #edgeai
+

@@ -6,8 +6,13 @@ youtube.token*.json
 # Renders y clips de vídeo pesados (se generan localmente)
 output/*.mp4
 output/*.mkv
+output/*.txt
+output/*.png
 clips/*.mp4
 clips/*.mkv
+clips/*.png
+clips/**/*.mp4
+downloads/
 
 # Audios binarios sintetizados (los guiones JSON sí se suben)
 audio/*.wav

@@ -1,0 +1,46 @@
+¿Es posible crear una Inteligencia Artificial completa desde cero sin tocar Python, sin depender de librerías CUDA de NVIDIA y ejecutándola sobre silicio libre en un procesador RISC-V de bajo consumo?
+
+En este documental técnico de 1 hora ("Equilibristas de Golang"), rompemos el monopolio de las arquitecturas privativas (x86 y ARM) y las nubes multimillonarias. A lo largo de cinco bloques en formato collage —desde directos de investigación en LiveKit hasta simulaciones visuales a 60 FPS y ensamblador vectorial puro— construimos una red neuronal paso a paso en el lenguaje Go y la llevamos hasta la placa CanMV-K230 (SoC Kendryte K230 Dual-Core RISC-V T-Head C908 con unidad vectorial RVV 1.0).
+
+---
+
+🔥 SUBTÍTULOS Y TEMÁTICAS CLAVE:
+• La Guerra de los Chips: ¿Por qué China apuesta todo a RISC-V frente al veto de ASML y EE.UU.?
+• Sin Python ni CUDA: Compilando binarios estáticos de 1.4 MB para Linux embebido.
+• Filosofía Vector Length Agnostic (VLA): Por qué RVV 1.0 supera a AVX-256 y AVX-512.
+• Simulación a 60 FPS: Deformando el tejido cósmico (Deep Space) para entender la Hipótesis del Manifold.
+
+---
+
+⏱️ TIMESTAMPS / CAPÍTULOS:
+00:00 - Prólogo Galáctico: La Rebelión del Silicio Libre
+01:18 - PARTE 1: Cimientos y Concurrencia (Goroutines, Worker Pools y Tensores Manuales en Go)
+16:52 - PARTE 2: El Dolor del Escalado y Gonum (Multiplicación Matricial y GPU Intel Arc)
+34:22 - PARTE 3: Anatomía Visual del Aprendizaje (XOR, Backpropagation y Geometría de Peso vs Sesgo)
+43:35 - PARTE 4: La Vida en Tiempo Real a 60 FPS (Ebiten, Manifold Cósmico y WebAssembly)
+51:17 - PARTE 5: Del Cloud al Silicio Libre (Arquitectura Kendryte K230 y Ensamblador RVV 1.0)
+
+---
+
+🛠️ RECURSOS, BLOG Y COMUNIDAD:
+• Entrada completa en el Blog (Desglose técnico de las 5 partes y pipeline autónomo):
+  https://equilibristofgo.github.io/blog/posts/04-post/
+• ¿Quieres participar o apuntarte a la comunidad? Lee antes nuestras normas:
+  https://github.com/equilibristofgo/blog/blob/main/CODE_OF_CONDUCT.md
+• Manifiesto "¿De qué va esto?": Cómo unirse a los debates de Equilibristas de Golang:
+  https://equilibristofgo.github.io/blog/posts/00-de-que-va-esto/
+• Repositorio completo (Simuladores Ebiten + Ensamblador RISC-V):
+  https://github.com/equilibristofgo/sandbox
+• Curso original NYU Deep Learning (Yann LeCun & Alfredo Canziani):
+  https://atcold.github.io/NYU-DLSP20/
+
+---
+
+💻 HARDWARE Y SOFTWARE UTILIZADO:
+• GPU: Intel Arc B580 (12 GB VRAM) — PyTorch XPU / Level Zero / SadTalker
+• Placa Edge AI: CanMV-K230 (SoC Canaan Kendryte K230, T-Head C908 Dual-Core 1.6 GHz + RVV 1.0 128-bit)
+• Motores TTS: Kokoro-TTS (OpenVINO / CPU)
+• Lenguaje: Go 1.24 (con ensamblador Plan 9 para riscv64)
+
+#riscv #golang #machinelearning #guerradeloschips #deeplearning #china #kendryte #ebiten #webassembly #siliciolibre #intelarc #hardwarelibre
+
